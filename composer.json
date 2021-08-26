@@ -1,0 +1,70 @@
+{
+    "name": "kevinpurwito/laravel-rajabiller",
+    "description": "Rajabiller integration for Laravel",
+    "keywords": [
+        "kevinpurwito",
+        "rajabiller",
+        "laravel",
+        "ppob"
+    ],
+    "homepage": "https://github.com/kevinpurwito/laravel-rajabiller",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Kevin Purwito",
+            "email": "kevin.purwito@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.3"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "orchestra/testbench": "^6.19.0",
+        "phpunit/phpunit": "^9.0",
+        "vimeo/psalm": "^4.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kevinpurwito\\LaravelRajabiller\\": "src",
+            "Kevinpurwito\\LaravelRajabiller\\Database\\Seeders\\": "database/seeders"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Kevinpurwito\\LaravelRajabiller\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "format": "php-cs-fixer fix --allow-risky=yes",
+        "psalm": "psalm",
+        "test": "phpunit --color=always",
+        "test:coverage": [
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit --color=always --coverage-html coverage"
+        ],
+        "test:coverage-clover": [
+            "@putenv XDEBUG_MODE=coverage",
+            "phpunit --color=always --coverage-clover coverage/clover.xml"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "RajabillerServiceProvider"
+            ],
+            "aliases": {
+                "Rajabiller": "RajabillerFacade"
+            }
+        }
+    }
+}
