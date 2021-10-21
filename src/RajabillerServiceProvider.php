@@ -64,7 +64,7 @@ class RajabillerServiceProvider extends ServiceProvider
 
         // seeders
         $this->publishes([
-            __DIR__ . '/../database/seeders/ItemSeeder.php' => database_path('seeders/ItemSeeder.php'),
+            __DIR__ . '/../database/seeders/RbSeeder.php' => database_path('seeders/ItemSeeder.php'),
         ], ['rajabiller', 'rb-seeders']);
     }
 

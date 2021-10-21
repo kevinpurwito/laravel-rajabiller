@@ -46,9 +46,9 @@ class Rajabiller
 
             // $item->name = $content->PRODUK; // use the name from seeders instead
             $item->price = $content->HARGA;
-            $item->admin_fee = $content->ADMIN;
+            $item->fee = $content->ADMIN;
             $item->commission = $content->KOMISI;
-            $item->status = ($content->STATUS_PRODUK == 'AKTIF');
+            $item->is_active = ($content->STATUS_PRODUK == 'AKTIF');
             $item->save();
         }
     }
@@ -69,9 +69,9 @@ class Rajabiller
 
             $item->code = $code;
             $item->price = $content->HARGA;
-            $item->admin_fee = $content->ADMIN;
+            $item->fee = $content->ADMIN;
             $item->commission = $content->KOMISI;
-            $item->status = ($content->STATUS_PRODUK == 'AKTIF');
+            $item->is_active = ($content->STATUS_PRODUK == 'AKTIF');
             $item->save();
         }
     }

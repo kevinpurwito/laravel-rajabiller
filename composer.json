@@ -60,10 +60,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "RajabillerServiceProvider"
+                "Kevinpurwito\\LaravelRajabiller\\RajabillerServiceProvider"
             ],
             "aliases": {
-                "Rajabiller": "RajabillerFacade"
+                "Rajabiller": "Kevinpurwito\\LaravelRajabiller\\RajabillerFacade"
             }
         }
     }
