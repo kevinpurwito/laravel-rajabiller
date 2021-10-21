@@ -4,7 +4,6 @@ namespace Kevinpurwito\LaravelRajabiller\Relationships;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Kevinpurwito\LaravelRajabiller\Models\RbGroup;
-use Kevinpurwito\LaravelRajabiller\Models\RbItem;
 
 trait BelongsToRbGroup
 {
