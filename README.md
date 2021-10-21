@@ -21,7 +21,7 @@ composer require kevinpurwito/laravel-rajabiller
 ## Configuration
 
 The `vendor:publish` command will publish a file named `kp_rajabiller.php` within your laravel project config
-folder `config/kp_rajabiller.php`. Edit this file with your desired table name for the table, defaults to `countries`.
+folder `config/kp_rajabiller.php`.
 
 Published Config File Contents
 
@@ -95,7 +95,8 @@ Rajabiller::pay('TXxxx', 'PLN', '123xxxx');
 
 ```
 
-> Be careful! You can only do 3 inquiries per day for 1 customerId
+> Be careful! You can only do 3 inquiries per day for 1 customerId for each item. 
+> For example. you can only inquire about a PLN charge for 1 customerId 3 times, after that you have to pay it or inquire again tomorrow.
 
 ### Handling the response
 

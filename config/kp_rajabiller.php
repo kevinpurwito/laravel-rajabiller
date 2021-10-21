@@ -10,6 +10,8 @@ return [
     'pin' => env('KP_RB_PIN', ''),
 
     'table_names' => [
+        'groups' => 'rb_groups',
+
         'items' => 'rb_items',
 
         'orders' => 'rb_orders',

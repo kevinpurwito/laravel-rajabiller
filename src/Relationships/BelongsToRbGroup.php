@@ -3,12 +3,13 @@
 namespace Kevinpurwito\LaravelRajabiller\Relationships;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Kevinpurwito\LaravelRajabiller\Models\RbGroup;
 use Kevinpurwito\LaravelRajabiller\Models\RbItem;
 
-trait BelongsToRbItem
+trait BelongsToRbGroup
 {
-    public function rbItem(): BelongsTo
+    public function rbGroup(): BelongsTo
     {
-        return $this->belongsTo(RbItem::class, 'rb_item_id');
+        return $this->belongsTo(RbGroup::class, 'rb_group_id');
     }
 }

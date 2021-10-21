@@ -51,11 +51,15 @@ class RajabillerServiceProvider extends ServiceProvider
 
         // migrations
         $this->publishes([
-            __DIR__ . '/../database/migrations/01_create_rb_items_table.php' => database_path('migrations/' . date('Y_m_d_Hi', time()) . '01_create_rb_items_table.php'),
+            __DIR__ . '/../database/migrations/01_create_rb_groups_table.php' => database_path('migrations/' . date('Y_m_d_Hi', time()) . '01_create_rb_groups_table.php'),
         ], ['rajabiller', 'rb-migrations']);
 
         $this->publishes([
-            __DIR__ . '/../database/migrations/02_create_rb_orders_table.php' => database_path('migrations/' . date('Y_m_d_Hi', time()) . '02_create_rb_orders_table.php'),
+            __DIR__ . '/../database/migrations/02_create_rb_items_table.php' => database_path('migrations/' . date('Y_m_d_Hi', time()) . '02_create_rb_items_table.php'),
+        ], ['rajabiller', 'rb-migrations']);
+
+        $this->publishes([
+            __DIR__ . '/../database/migrations/03_create_rb_orders_table.php' => database_path('migrations/' . date('Y_m_d_Hi', time()) . '03_create_rb_orders_table.php'),
         ], ['rajabiller', 'rb-migrations']);
 
         // seeders

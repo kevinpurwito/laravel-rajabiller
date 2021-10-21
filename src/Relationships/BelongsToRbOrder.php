@@ -9,6 +9,6 @@ trait BelongsToRbOrder
 {
     public function rbOrder(): BelongsTo
     {
-        return $this->belongsTo(RbOrder::class);
+        return $this->belongsTo(RbOrder::class, 'rb_order_id');
     }
 }
