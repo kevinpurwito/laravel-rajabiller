@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRbItemsTable extends Migration
+class CreateRbOrdersTable extends Migration
 {
     protected function getTable()
     {

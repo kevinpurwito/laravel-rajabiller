@@ -1181,5 +1181,3 @@ INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denomi
 INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denominator, created_at, updated_at) VALUES (NULL, 'VIN25H', 'VOUCHER BELANJA ELEKTRIK INDOMARET 25K', 'topup', 'BELANJA', 'INDOMARET', 25, NOW(), NOW());
 INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denominator, created_at, updated_at) VALUES (NULL, 'SKYPED10H', 'SKYPE CREDIT $10', 'topup', 'BELANJA', 'SKYPE', 10, NOW(), NOW());
 INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denominator, created_at, updated_at) VALUES (NULL, 'SKYPED25H', 'SKYPE CREDIT $25', 'topup', 'BELANJA', 'SKYPE', 25, NOW(), NOW());
-
-UPDATE rb_items a, rb_groups b SET a.rb_group_id = b.id WHERE a.group_name = b.name;

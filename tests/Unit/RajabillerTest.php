@@ -3,7 +3,7 @@
 namespace Kevinpurwito\LaravelRajabiller\Tests\Unit;
 
 use GuzzleHttp\Psr7\Response;
-use Kevinpurwito\LaravelRajabiller\RajabillerFacade as Rajabiller;
+use Kevinpurwito\LaravelRajabiller\Facades\Rajabiller;
 use Kevinpurwito\LaravelRajabiller\Tests\TestCase;
 
 class RajabillerTest extends TestCase

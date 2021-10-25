@@ -63,14 +63,38 @@ appropriate arrays within your Laravel project `config/app.php`
 
 ```php
 [
-    'Rajabiller' => Kevinpurwito\LaravelRajabiller\RajabillerFacade::class,
+    'Rajabiller' => Kevinpurwito\LaravelRajabiller\Facades\Rajabiller::class,
 ];
+```
+
+## Publishing the migration
+
+Aside from migrations, you shouldn't need to publish the others, such as seeders and config; unless you want to
+customize them
+
+```bash
+php artisan vendor:publish --provider=Kevinpurwito\LaravelRajabiller\RajabillerServiceProvider --tag=rb-migrations
+```
+
+## Running the seeders
+
+```bash
+php artisan db:seed --class=Kevinpurwito\LaravelRajabiller\Database\Seeders\RbSeeder
+```
+
+## Using the command
+
+This package comes with a built-in command for you to call to sync items in the database to Rajabiller's servers. This
+command maintains the pricing and availability of the items. You can call this command in Laravel CronJob.
+
+```bash
+php artisan rb-sync-items
 ```
 
 ## Usage
 
 ```php
-use Kevinpurwito\LaravelRajabiller\RajabillerFacade as Rajabiller;
+use Kevinpurwito\LaravelRajabiller\Facades\Rajabiller;
 
 // returns the balance that you have
 Rajabiller::getBalance();
@@ -95,13 +119,13 @@ Rajabiller::pay('TXxxx', 'PLN', '123xxxx');
 
 ```
 
-> Be careful! You can only do 3 inquiries per day for 1 customerId for each item. 
+> Be careful! You can only do 3 inquiries per day for 1 customerId for each item.
 > For example. you can only inquire about a PLN charge for 1 customerId 3 times, after that you have to pay it or inquire again tomorrow.
 
 ### Handling the response
 
 ```php
-use Kevinpurwito\LaravelRajabiller\RajabillerFacade as Rajabiller;
+use Kevinpurwito\LaravelRajabiller\Facades\Rajabiller;
 
 $response = Rajabiller::item('S5H'); // telkomsel pulsa 5rb
 

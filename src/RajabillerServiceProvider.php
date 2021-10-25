@@ -3,6 +3,7 @@
 namespace Kevinpurwito\LaravelRajabiller;
 
 use Illuminate\Support\ServiceProvider;
+use Kevinpurwito\LaravelRajabiller\Console\SyncItems;
 use Kevinpurwito\LaravelRajabiller\Contracts\ItemContract;
 use Kevinpurwito\LaravelRajabiller\Contracts\OrderContract;
 use Kevinpurwito\LaravelRajabiller\Models\RbItem;
@@ -18,6 +19,12 @@ class RajabillerServiceProvider extends ServiceProvider
         $this->offerPublishing();
 
         $this->registerModelBindings();
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                SyncItems::class,
+            ]);
+        }
     }
 
     /**

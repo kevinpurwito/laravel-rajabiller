@@ -63,7 +63,7 @@
                 "Kevinpurwito\\LaravelRajabiller\\RajabillerServiceProvider"
             ],
             "aliases": {
-                "Rajabiller": "Kevinpurwito\\LaravelRajabiller\\RajabillerFacade"
+                "Rajabiller": "Kevinpurwito\\LaravelRajabiller\\Facades\\Rajabiller"
             }
         }
     }
