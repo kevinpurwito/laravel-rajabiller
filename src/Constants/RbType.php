@@ -2,7 +2,9 @@
 
 namespace Kevinpurwito\LaravelRajabiller\Constants;
 
-class RbType
+use Kevinpurwito\PhpConstant\PhpConstant;
+
+class RbType extends PhpConstant
 {
     public const BILLS = 'bills';
     public const PUBLIC = 'public';

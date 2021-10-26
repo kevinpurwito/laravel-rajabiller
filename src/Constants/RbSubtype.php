@@ -2,7 +2,9 @@
 
 namespace Kevinpurwito\LaravelRajabiller\Constants;
 
-class RbSubtype
+use Kevinpurwito\PhpConstant\PhpConstant;
+
+class RbSubtype extends PhpConstant
 {
     public const TV_KABEL = 'TV KABEL';
     public const KARTU_KREDIT = 'KARTU KREDIT';

@@ -2,7 +2,9 @@
 
 namespace Kevinpurwito\LaravelRajabiller\Constants;
 
-class RbStatus
+use Kevinpurwito\PhpConstant\PhpConstant;
+
+class RbStatus extends PhpConstant
 {
     public const PENDING = 'PENDING';
     public const GAGAL = 'GAGAL';

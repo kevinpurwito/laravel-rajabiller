@@ -2,7 +2,9 @@
 
 namespace Kevinpurwito\LaravelRajabiller\Constants;
 
-class RbOperator
+use Kevinpurwito\PhpConstant\PhpConstant;
+
+class RbOperator extends PhpConstant
 {
     // public const GAME_ONLINE = 'GAME ONLINE';
     public const KARTU3 = 'KARTU3';
