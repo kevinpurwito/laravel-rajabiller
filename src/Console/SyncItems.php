@@ -15,5 +15,6 @@ class SyncItems extends Command
     public function handle()
     {
         Rajabiller::populateItems();
+        Rajabiller::populateItemsH2H();
     }
 }

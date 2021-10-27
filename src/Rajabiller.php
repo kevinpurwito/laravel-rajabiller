@@ -36,8 +36,7 @@ class Rajabiller
         $items = RbItem::all();
 
         foreach ($items as $item) {
-            $response = $this->item($item->code);
-            $content = json_decode($response->getBody()->getContents());
+            $content = $this->getItem($item->code);
             $status = $content->STATUS ?? '';
 
             if ($status !== '00') {
@@ -59,8 +58,7 @@ class Rajabiller
 
         foreach ($items as $item) {
             $code = $item->code . 'H';
-            $response = $this->item($code);
-            $content = json_decode($response->getBody()->getContents());
+            $content = $this->getItem($item->code);
             $status = $content->STATUS ?? '';
 
             if ($status !== '00') {
@@ -82,6 +80,19 @@ class Rajabiller
 
         return json_decode($response->getBody()->getContents())->SALDO ?? 0;
     }
+
+    public function getItem(string $code): object
+    {
+        $response = $this->item($code);
+
+        return json_decode($response->getBody()->getContents());
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Direct to Rajabiller, return ResponseInterface
+    |--------------------------------------------------------------------------
+    */
 
     public function balance(): ResponseInterface
     {
