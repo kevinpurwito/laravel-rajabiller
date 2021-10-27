@@ -6,7 +6,6 @@ use Kevinpurwito\PhpConstant\PhpConstant;
 
 class RbType extends PhpConstant
 {
-    public const BILLS = 'bills';
-    public const PUBLIC = 'public';
-    public const TOP_UP = 'top_up';
+    public const BILLS = 'BILLS';
+    public const TOP_UP = 'TOP UP';
 }

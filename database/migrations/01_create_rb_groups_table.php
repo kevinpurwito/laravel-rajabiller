@@ -19,8 +19,6 @@ class CreateRbGroupsTable extends Migration
             Schema::create($tableName, function (Blueprint $table) {
                 $table->bigIncrements('id');
                 $table->boolean('is_active')->index()->default(1);
-                $table->string('type', 30)->nullable()->index()->comment('bills|public|top_up');
-                $table->string('subtype', 30)->nullable()->index()->comment('RbSubtype.php');
                 $table->string('name');
                 $table->timestamps();
             });

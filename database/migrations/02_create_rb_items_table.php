@@ -22,7 +22,7 @@ class CreateRbItemsTable extends Migration
                 $table->boolean('is_active')->index()->default(1);
                 $table->string('code', 20)->unique();
                 $table->string('name')->nullable();
-                $table->string('type', 30)->nullable()->index()->comment('bills|public|top_up');
+                $table->string('type', 30)->nullable()->index()->comment('BILLS|TOP UP');
                 $table->string('subtype', 30)->nullable()->index()->comment('RbSubtype.php');
                 $table->string('group_name', 30)->nullable()->index()->comment('rb_groups');
 

@@ -2,6 +2,9 @@
 
 All notable changes to `laravel-rajabiller` will be documented in this file
 
+## [1.0.2] - 2021-10-27
+- Major changes in database migration & seeders
+
 ## [1.0.1] - 2021-10-26
 - Use `kevinpurwito/php-constant` package for the constants
 
