@@ -18,7 +18,7 @@ class CreateRbOrdersTable extends Migration
         if (! Schema::hasTable($tableName)) {
             Schema::create($tableName, function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->foreignId('rb_item_id')->nullable();
+                $table->foreignId('rb_item_id')->constrained()->nullable()->onUpdate('CASCADE')->onDelete('CASCADE');
                 $table->string('code', 20)->nullable();
                 $table->string('sn', 20)->nullable();
                 $table->string('uid', 10)->nullable();
