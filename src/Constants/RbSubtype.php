@@ -26,4 +26,13 @@ class RbSubtype extends PhpConstant
     public const PLN_TOKEN = 'PLN TOKEN';
     public const PULSA = 'PULSA';
     public const BELANJA = 'BELANJA';
+
+    public static function payMethod(): array
+    {
+        return [
+            self::TV_KABEL,
+            self::HP_PASCABAYAR,
+            self::ASURANSI,
+        ];
+    }
 }

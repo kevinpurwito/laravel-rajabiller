@@ -3,9 +3,10 @@
 namespace Kevinpurwito\LaravelRajabiller;
 
 use GuzzleHttp\Client;
+use Kevinpurwito\LaravelRajabiller\Constants\RbConstant;
+use Kevinpurwito\LaravelRajabiller\Constants\RbMethod;
 use Kevinpurwito\LaravelRajabiller\Models\RbItem;
 use Kevinpurwito\LaravelRajabiller\Models\RbOrder;
-use Psr\Http\Message\ResponseInterface;
 
 class Rajabiller
 {
@@ -36,10 +37,10 @@ class Rajabiller
         $items = RbItem::all();
 
         foreach ($items as $item) {
-            $content = $this->getItem($item->code);
+            $content = $this->item($item->code);
             $status = $content->STATUS ?? '';
 
-            if ($status !== '00') {
+            if ($status !== RbConstant::SUCCESS_CODE) {
                 continue;
             }
 
@@ -47,7 +48,7 @@ class Rajabiller
             $item->price = $content->HARGA;
             $item->fee = $content->ADMIN;
             $item->commission = $content->KOMISI;
-            $item->is_active = ($content->STATUS_PRODUK == 'AKTIF');
+            $item->is_active = ($content->STATUS_PRODUK == RbConstant::ACTIVE);
             $item->save();
         }
     }
@@ -58,10 +59,10 @@ class Rajabiller
 
         foreach ($items as $item) {
             $code = $item->code . 'H';
-            $content = $this->getItem($item->code);
+            $content = $this->item($item->code);
             $status = $content->STATUS ?? '';
 
-            if ($status !== '00') {
+            if ($status !== RbConstant::SUCCESS_CODE) {
                 continue;
             }
 
@@ -69,51 +70,32 @@ class Rajabiller
             $item->price = $content->HARGA;
             $item->fee = $content->ADMIN;
             $item->commission = $content->KOMISI;
-            $item->is_active = ($content->STATUS_PRODUK == 'AKTIF');
+            $item->is_active = ($content->STATUS_PRODUK == RbConstant::ACTIVE);
             $item->save();
         }
     }
 
     public function getBalance(): int
     {
-        $response = $this->balance();
-
-        return json_decode($response->getBody()->getContents())->SALDO ?? 0;
+        return $this->balance()->SALDO ?? 0;
     }
 
-    public function getItem(string $code): object
+    public function balance(): object
     {
-        $response = $this->item($code);
+        $params = [
+            'uid' => $this->uid, 'pin' => $this->pin,
+            'method' => 'rajabiller.' . RbMethod::BALANCE,
+        ];
+
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
 
         return json_decode($response->getBody()->getContents());
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Direct to Rajabiller, return ResponseInterface
-    |--------------------------------------------------------------------------
-    */
-
-    public function balance(): ResponseInterface
-    {
-        $params = [
-            'uid' => $this->uid, 'pin' => $this->pin,
-            'method' => 'rajabiller.balance',
-        ];
-
-        return $this->client->request('POST', $this->url, ['json' => $params]);
-    }
-
-    /**
-     * @param string|null $date | Y-m-d, ex: 2021-08-01
-     * @param RbOrder|null $order
-     * @return ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function orders($date = null, RbOrder $order = null): ResponseInterface
+    public function orders(?string $date = null, ?RbOrder $order = null): object
     {
         // Max Range only 1 day
-        $date = $date ?? date('Y-m-d');
+        $date = $date ?? date('Y-m-d'); // Y-m-d, ex: 2021-08-01
         $startDate = date_format(date_create_from_format('Y-m-d', $date), 'Ymd') . '000000';
         $endDate = date_format(date_create_from_format('Y-m-d', $date), 'Ymd') . '235959';
 
@@ -123,7 +105,7 @@ class Rajabiller
 
         $params = [
             'uid' => $this->uid, 'pin' => $this->pin,
-            'method' => 'rajabiller.datatransaksi',
+            'method' => 'rajabiller.' . RbMethod::TRANSACTION,
             'tgl1' => $startDate,
             'tgl2' => $endDate,
             'id_transaksi' => $transId,
@@ -132,29 +114,35 @@ class Rajabiller
             'limit' => '',
         ];
 
-        return $this->client->request('POST', $this->url, ['json' => $params]);
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
     }
 
-    public function groupItems(string $groupCode): ResponseInterface
+    public function groupItems(string $groupCode): object
     {
         $params = [
             'uid' => $this->uid, 'pin' => $this->pin,
-            'method' => 'rajabiller.harga',
+            'method' => 'rajabiller.' . RbMethod::PRICE,
             'produk' => $groupCode,
         ];
 
-        return $this->client->request('POST', $this->url, ['json' => $params]);
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
     }
 
-    public function item(string $code): ResponseInterface
+    public function item(string $code): object
     {
         $params = [
             'uid' => $this->uid, 'pin' => $this->pin,
-            'method' => 'rajabiller.info_produk',
+            'method' => 'rajabiller.' . RbMethod::PRODUCT_INFO,
             'kode_produk' => $code,
         ];
 
-        return $this->client->request('POST', $this->url, ['json' => $params]);
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
     }
 
     /**
@@ -165,12 +153,14 @@ class Rajabiller
      * for E-Toll, use E-Toll Number instead
      * for Other Items, use Customer's Phone Number
      * @param string $method | 'pulsa' or 'game'
+     * @return object
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function purchase(string $refId, string $itemCode, string $customerId, string $method = 'pulsa'): ResponseInterface
+    public function purchase(string $refId, string $itemCode, string $customerId, string $method = RbMethod::PULSA): object
     {
-//        if (! in_array($method, ['pulsa', 'game'])) {
-//            return (object)['sucess' => false, 'message' => 'Invalid method $method'];
-//        }
+        if (! in_array($method, RbMethod::purchases())) {
+            return (object)['success' => false, 'message' => 'Invalid method: ' . $method];
+        }
 
         $params = [
             'uid' => $this->uid, 'pin' => $this->pin,
@@ -180,20 +170,16 @@ class Rajabiller
             'ref1' => $refId,
         ];
 
-        return $this->client->request('POST', $this->url, ['json' => $params]);
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
     }
 
-    /**
-     * @param string $refId
-     * @param string $itemCode
-     * @param string $customerId
-     * @param string $areaCode | required for $itemCode = TELEPON, otherwise not needed
-     */
-    public function inquiry(string $refId, string $itemCode, string $customerId, string $areaCode = ''): ResponseInterface
+    public function inquiry(string $refId, string $itemCode, string $customerId, string $areaCode = ''): object
     {
         $params = [
             'uid' => $this->uid, 'pin' => $this->pin,
-            'method' => 'rajabiller.inq',
+            'method' => 'rajabiller.' . RbMethod::INQ,
             'kode_produk' => $itemCode,
             'idpel1' => $customerId,
             'idpel2' => '',
@@ -201,26 +187,27 @@ class Rajabiller
             'ref1' => $refId,
         ];
 
-        if ($itemCode == 'TELEPON' && $areaCode) {
+        if ($itemCode == RbConstant::PHONE && $areaCode) {
             $params['idpel1'] = $areaCode;
             $params['idpel2'] = $customerId;
         }
 
-        return $this->client->request('POST', $this->url, ['json' => $params]);
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
     }
 
-    public function pay(string $refId, string $itemCode, string $customerId, string $method = 'paydetail', string $areaCode = ''): ResponseInterface
+    public function pay(string $refId, string $itemCode, string $customerId, string $method = RbMethod::PAY_DETAIL, string $areaCode = ''): object
     {
-//        if (! in_array($method, ['paydetail', 'pay'])) {
-//            return (object)['sucess' => false, 'message' => 'Invalid method $method'];
-//        }
+        if (! in_array($method, RbMethod::payments())) {
+            return (object)['success' => false, 'message' => 'Invalid method: ' . $method];
+        }
 
-        $response = $this->inquiry($refId, $itemCode, $customerId, $areaCode);
-        $content = json_decode($response->getBody()->getContents());
+        $content = $this->inquiry($refId, $itemCode, $customerId, $areaCode);
         $status = $content->STATUS ?? '';
 
-        if (! $status == '00') {
-            return $response;
+        if (! $status == RbConstant::SUCCESS_CODE) {
+            return $content;
         }
 
         $params = [
@@ -236,41 +223,68 @@ class Rajabiller
             'nominal' => $content->NOMINAL,
         ];
 
-        if ($itemCode == 'TELEPON' && $areaCode) {
+        if ($itemCode == RbConstant::PHONE && $areaCode) {
             $params['idpel1'] = $areaCode;
             $params['idpel2'] = $customerId;
         }
 
-        return $this->client->request('POST', $this->url, ['json' => $params]);
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
     }
 
-    public function bpjsInquiry(string $refId, string $itemCode, string $customerId, string $period): ResponseInterface
+    public function buy(string $refId, string $itemCode, string $customerId, int $nominal): object
+    {
+        if (! in_array($itemCode, [RbConstant::PLN])) {
+            return (object)['success' => false, 'message' => 'Invalid itemCode: ' . $itemCode];
+        }
+
+        if (! in_array($nominal, RbConstant::nominal())) {
+            return (object)['success' => false, 'message' => 'Invalid nominal: ' . $nominal];
+        }
+
+        $params = [
+            'uid' => $this->uid, 'pin' => $this->pin,
+            'method' => 'rajabiller.' . RbMethod::BUY,
+            'kode_produk' => $itemCode,
+            'idpel' => $customerId,
+            'ref1' => $refId,
+            'nominal' => $nominal,
+        ];
+
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
+    }
+
+    public function bpjsInquiry(string $refId, string $itemCode, string $customerId, string $period): object
     {
         $params = [
             'uid' => $this->uid, 'pin' => $this->pin,
-            'method' => 'rajabiller.bpjsinq',
+            'method' => 'rajabiller.' . RbMethod::BPJS_INQ,
             'kode_produk' => $itemCode,
             'periode' => $period,
             'idpel1' => $customerId,
             'ref1' => $refId,
         ];
 
-        return $this->client->request('POST', $this->url, ['json' => $params]);
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
     }
 
-    public function bpjsPay(string $refId, string $itemCode, string $customerId, string $period): ResponseInterface
+    public function bpjsPay(string $refId, string $itemCode, string $customerId, string $period): object
     {
-        $response = $this->bpjsInquiry($refId, $itemCode, $customerId, $period);
-        $content = json_decode($response->getBody()->getContents());
+        $content = $this->bpjsInquiry($refId, $itemCode, $customerId, $period);
         $status = $content->STATUS ?? '';
 
-        if (! $status == '00') {
-            return $response;
+        if (! $status == RbConstant::SUCCESS_CODE) {
+            return $content;
         }
 
         $params = [
             'uid' => $this->uid, 'pin' => $this->pin,
-            'method' => 'rajabiller.bpjspay',
+            'method' => 'rajabiller.' . RbMethod::BPJS_PAY,
             'kode_produk' => $itemCode,
             'idpel1' => $customerId,
             'periode' => $period,
@@ -279,6 +293,106 @@ class Rajabiller
             'nominal' => $content->NOMINAL,
         ];
 
-        return $this->client->request('POST', $this->url, ['json' => $params]);
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
+    }
+
+    public function ccInquiry(string $refId, string $itemCode, string $customerId, int $nominal): object
+    {
+        $params = [
+            'uid' => $this->uid, 'pin' => $this->pin,
+            'method' => 'rajabiller.' . RbMethod::CC_INQ,
+            'kode_produk' => $itemCode,
+            'idpel1' => $customerId,
+            'idpel2' => '',
+            'idpel3' => '',
+            'ref1' => $refId,
+            'nominal' => $nominal,
+        ];
+
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
+    }
+
+    public function ccPay(string $refId, string $itemCode, string $customerId, int $nominal): object
+    {
+        $content = $this->ccInquiry($refId, $itemCode, $customerId, $nominal);
+        $status = $content->STATUS ?? '';
+
+        if (! $status == RbConstant::SUCCESS_CODE) {
+            return $content;
+        }
+
+        $params = [
+            'uid' => $this->uid, 'pin' => $this->pin,
+            'method' => 'rajabiller.' . RbMethod::CC_PAY,
+            'kode_produk' => $itemCode,
+            'idpel1' => $customerId,
+            'idpel2' => '',
+            'idpel3' => '',
+            'ref1' => '',
+            'ref2' => $content->REF2,
+            'ref3' => '',
+            'nominal' => $nominal,
+        ];
+
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
+    }
+
+    public function transferInquiry(string $refId, string $itemCode, string $customerId, int $nominal, string $bankCode, string $phoneNo): object
+    {
+        if (! in_array($itemCode, [RbConstant::TRANSFER])) {
+            return (object)['success' => false, 'message' => 'Invalid itemCode: ' . $itemCode];
+        }
+
+        $params = [
+            'uid' => $this->uid, 'pin' => $this->pin,
+            'method' => 'rajabiller.' . RbMethod::TRANSFER_INQ,
+            'kode_produk' => $itemCode,
+            'idpel1' => $customerId,
+            'idpel2' => '',
+            'idpel3' => '',
+            'ref1' => $refId,
+            'nominal' => $nominal,
+            'kodebank' => $bankCode,
+            'nomorhp' => $phoneNo,
+        ];
+
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
+    }
+
+    public function transferPay(string $refId, string $itemCode, string $customerId, int $nominal, string $bankCode, string $phoneNo): object
+    {
+        $content = $this->transferInquiry($refId, $itemCode, $customerId, $nominal, $bankCode, $phoneNo);
+        $status = $content->STATUS ?? '';
+
+        if (! $status == RbConstant::SUCCESS_CODE) {
+            return $content;
+        }
+
+        $params = [
+            'uid' => $this->uid, 'pin' => $this->pin,
+            'method' => 'rajabiller.' . RbMethod::TRANSFER_PAY,
+            'kode_produk' => $itemCode,
+            'idpel1' => $customerId,
+            'idpel2' => '',
+            'idpel3' => '',
+            'ref1' => '',
+            'ref2' => $content->REF2,
+            'ref3' => '',
+            'nominal' => $nominal,
+            'kodebank' => $bankCode,
+            'nomorhp' => $phoneNo,
+        ];
+
+        $response = $this->client->request('POST', $this->url, ['json' => $params]);
+
+        return json_decode($response->getBody()->getContents());
     }
 }
