@@ -59,9 +59,9 @@ class RbItem extends Model
         if ($rbItem->type == RbType::BILLS) {
             if ($rbItem->group_name == RbConstant::BPJS) {
                 $response = Rajabiller::bpjsPay($refId, $itemCode, $customerId, $period);
-            } else if ($rbItem->subType == RbSubtype::KARTU_KREDIT) {
+            } elseif ($rbItem->subType == RbSubtype::KARTU_KREDIT) {
                 $response = Rajabiller::ccPay($refId, $itemCode, $customerId, $nominal);
-            } else if (in_array($rbItem->subtype, RbSubtype::payMethod())) {
+            } elseif (in_array($rbItem->subtype, RbSubtype::payMethod())) {
                 $response = Rajabiller::pay($refId, $itemCode, $customerId, RbMethod::PAY);
             } else {
                 $response = Rajabiller::pay($refId, $itemCode, $customerId, RbMethod::PAY_DETAIL);
