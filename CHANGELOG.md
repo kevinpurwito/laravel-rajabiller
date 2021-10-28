@@ -4,6 +4,7 @@ All notable changes to `laravel-rajabiller` will be documented in this file
 
 ## [2.0.1] - 2021-10-28
 - Fix foreign key for rb_orders to rb_item_id
+- Fix foreign key for rb_items to rb_group_id
 
 ## [2.0.0] - 2021-10-28
 - Drop support for PHP7.4
