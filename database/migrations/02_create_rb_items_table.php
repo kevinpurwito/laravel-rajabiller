@@ -18,7 +18,7 @@ class CreateRbItemsTable extends Migration
         if (! Schema::hasTable($tableName)) {
             Schema::create($tableName, function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->foreignId('rb_group_id')->constrained()->nullable()->onUpdate('CASCADE')->onDelete('CASCADE');
+                $table->unsignedBigInteger('rb_group_id')->nullable();
                 $table->boolean('is_active')->index()->default(1);
                 $table->string('code', 20)->unique();
                 $table->string('name')->nullable();
@@ -42,6 +42,8 @@ class CreateRbItemsTable extends Migration
                 }
 
                 $table->timestamps();
+
+                $table->foreign('rb_group_id')->references('id')->on('rb_groups')->onUpdate('cascade')->onDelete('cascade');
             });
         }
     }

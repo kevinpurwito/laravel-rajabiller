@@ -18,7 +18,7 @@ class CreateRbOrdersTable extends Migration
         if (! Schema::hasTable($tableName)) {
             Schema::create($tableName, function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->foreignId('rb_item_id')->constrained()->nullable()->onUpdate('CASCADE')->onDelete('CASCADE');
+                $table->unsignedBigInteger('rb_item_id')->nullable();
                 $table->string('code', 20)->nullable();
                 $table->string('sn', 20)->nullable();
                 $table->string('uid', 10)->nullable();
@@ -41,6 +41,8 @@ class CreateRbOrdersTable extends Migration
                 $table->unsignedInteger('balance_deducted')->default(0);
                 $table->unsignedInteger('balance_remaining')->default(0);
                 $table->timestamps();
+
+                $table->foreign('rb_item_id')->references('id')->on('rb_items')->onUpdate('cascade')->onDelete('cascade');
             });
         }
     }
