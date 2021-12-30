@@ -2,6 +2,9 @@
 
 All notable changes to `laravel-rajabiller` will be documented in this file
 
+## [2.0.4] - 2021-12-30
+- Skip duplicates on populateItemsH2H()
+
 ## [2.0.3] - 2021-12-30
 - Cast admin fee from rajabiller to int (to handle empty string)
 
