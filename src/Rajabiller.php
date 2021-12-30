@@ -66,6 +66,12 @@ class Rajabiller
                 continue;
             }
 
+            $duplicate = RbItem::whereCode($code)->first();
+            if ($duplicate && $duplicate->id !== $item->id) {
+                // skip duplicates
+                continue;
+            }
+
             $item->code = $code;
             $item->price = (int)$content->HARGA;
             $item->fee = (int)$content->ADMIN;
