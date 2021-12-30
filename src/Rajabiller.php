@@ -45,9 +45,9 @@ class Rajabiller
             }
 
             // $item->name = $content->PRODUK; // use the name from seeders instead
-            $item->price = (int)$content->HARGA ?? $item->price;
-            $item->fee = (int)$content->ADMIN ?? $item->fee;
-            $item->commission = (int)$content->KOMISI ?? $item->commission;
+            $item->price = (int)$content->HARGA;
+            $item->fee = (int)$content->ADMIN;
+            $item->commission = (int)$content->KOMISI;
             $item->is_active = ($content->STATUS_PRODUK == RbConstant::ACTIVE);
             $item->save();
         }
@@ -67,9 +67,9 @@ class Rajabiller
             }
 
             $item->code = $code;
-            $item->price = (int)$content->HARGA ?? $item->price;
-            $item->fee = (int)$content->ADMIN ?? $item->fee;
-            $item->commission = (int)$content->KOMISI ?? $item->commission;
+            $item->price = (int)$content->HARGA;
+            $item->fee = (int)$content->ADMIN;
+            $item->commission = (int)$content->KOMISI;
             $item->is_active = ($content->STATUS_PRODUK == RbConstant::ACTIVE);
             $item->save();
         }
