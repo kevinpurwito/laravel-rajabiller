@@ -40,6 +40,11 @@ class Rajabiller
             $content = $this->item($item->code);
             $status = $content->STATUS ?? '';
 
+            $code = $content->KODE_PRODUK ?? '';
+            if ($code !== $item->code) {
+                continue;
+            }
+
             if ($status !== RbConstant::SUCCESS_CODE) {
                 continue;
             }
@@ -59,8 +64,13 @@ class Rajabiller
 
         foreach ($items as $item) {
             $code = $item->code . 'H';
-            $content = $this->item($item->code);
+            $content = $this->item($code);
             $status = $content->STATUS ?? '';
+
+            $itemCode = $content->KODE_PRODUK ?? '';
+            if ($itemCode !== $code) {
+                continue;
+            }
 
             if ($status !== RbConstant::SUCCESS_CODE) {
                 continue;
@@ -68,7 +78,6 @@ class Rajabiller
 
             $duplicate = RbItem::whereCode($code)->first();
             if ($duplicate && $duplicate->id !== $item->id) {
-                // skip duplicates
                 continue;
             }
 

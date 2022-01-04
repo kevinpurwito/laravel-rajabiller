@@ -2,7 +2,11 @@
 
 All notable changes to `laravel-rajabiller` will be documented in this file
 
-## [2.0.4] - 2021-12-30
+## [2.0.4] - 2022-01-04
+### Added
+- config to syncH2H or not
+### Changed
+- Handle empty `KODE_PRODUK` response for populateItems() & populateItemsH2H()
 - Skip duplicates on populateItemsH2H()
 
 ## [2.0.3] - 2021-12-30

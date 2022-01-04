@@ -15,6 +15,8 @@ class SyncItems extends Command
     public function handle()
     {
         Rajabiller::populateItems();
-        Rajabiller::populateItemsH2H();
+        if (config('kp_rajabiller.sync_h2h', false)) {
+            Rajabiller::populateItemsH2H();
+        }
     }
 }
