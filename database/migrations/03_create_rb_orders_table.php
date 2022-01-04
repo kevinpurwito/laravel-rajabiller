@@ -37,7 +37,7 @@ class CreateRbOrdersTable extends Migration
                 $table->string('ref_3')->nullable();
                 $table->string('receipt_url')->nullable();
                 $table->string('note')->nullable();
-                $table->string('detail')->nullable();
+                $table->longText('detail')->nullable();
                 $table->unsignedInteger('balance_deducted')->default(0);
                 $table->unsignedInteger('balance_remaining')->default(0);
                 $table->timestamps();
