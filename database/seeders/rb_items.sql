@@ -49,7 +49,6 @@ INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denomi
 INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denominator, created_at, updated_at) VALUES (NULL, 'ASRBINT2', 'ASURANSI BINTANG PAKET 2', 'BILLS', 'ASURANSI', 'BINTANG', 2, NOW(), NOW());
 INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denominator, created_at, updated_at) VALUES (NULL, 'ASRBNIL', 'BNI LIFE PREMI LANJUTAN', 'BILLS', 'ASURANSI', 'BNI', 0, NOW(), NOW());
 INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denominator, created_at, updated_at) VALUES (NULL, 'ASRBPJSKS', 'BPJS KESEHATAN', 'BILLS', 'ASURANSI', 'BPJS', 0, NOW(), NOW());
-INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denominator, created_at, updated_at) VALUES (NULL, 'ASRBPJSKSH', 'BPJS KESEHATAN', 'BILLS', 'ASURANSI', 'BPJS', 0, NOW(), NOW());
 INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denominator, created_at, updated_at) VALUES (NULL, 'ASRBPJSKSQ', 'BPJS KESEHATAN', 'BILLS', 'ASURANSI', 'BPJS', 0, NOW(), NOW());
 INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denominator, created_at, updated_at) VALUES (NULL, 'ASRBPJSTK', 'ASURANSI BPJS KETENAGAKERJAAN', 'BILLS', 'ASURANSI', 'BPJS', 0, NOW(), NOW());
 INSERT INTO rb_items (rb_group_id, code, name, type, subtype, group_name, denominator, created_at, updated_at) VALUES (NULL, 'ASRCAR', 'CAR', 'BILLS', 'ASURANSI', 'CAR', 0, NOW(), NOW());
