@@ -8,7 +8,7 @@
 
 Laravel Rajabiller is a package that integrates [Rajabiller](https://www.rajabiller.com/) for Laravel.
 
-Refer to this [docs](https://www.rajabiller.com/docs/json).
+Refer to this [docs](https://www.rajabiller.com/docs/json) & this [postman](https://documenter.getpostman.com/view/2496469/TzCMeoGt#4218dba5-ec82-4274-b039-de8725837826)
 
 ## Installation
 
