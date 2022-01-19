@@ -20,7 +20,7 @@ class CreateRbItemsTable extends Migration
                 $table->bigIncrements('id');
                 $table->unsignedBigInteger('rb_group_id')->nullable();
                 $table->boolean('is_active')->index()->default(1);
-                $table->string('code', 20)->unique();
+                $table->string('code', 20)->index();
                 $table->string('name')->nullable();
                 $table->string('type', 30)->nullable()->index()->comment('BILLS|TOP UP');
                 $table->string('subtype', 30)->nullable()->index()->comment('RbSubtype.php');

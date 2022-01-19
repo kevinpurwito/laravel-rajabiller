@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-rajabiller` will be documented in this file
 
+## [2.0.5] - 2022-01-19
+### Changed
+- Item Code not unique (for PLN Token)
+
 ## [2.0.4] - 2022-01-04
 ### Added
 - config to syncH2H or not
