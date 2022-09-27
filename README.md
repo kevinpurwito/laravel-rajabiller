@@ -82,6 +82,12 @@ php artisan vendor:publish --provider=Kevinpurwito\LaravelRajabiller\RajabillerS
 php artisan db:seed --class=Kevinpurwito\LaravelRajabiller\Database\Seeders\RbSeeder
 ```
 
+## Dev Credentials
+```
+UID=FA9919
+PIN=123321
+```
+
 ## Using the command
 
 This package comes with a built-in command for you to call to sync items in the database to Rajabiller's servers. This
