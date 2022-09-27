@@ -37,6 +37,10 @@ class Rajabiller
         $items = RbItem::all();
 
         foreach ($items as $item) {
+            if ($item->code == 'PLNPRA' || $item->code == 'PLNPRAH') {
+                continue;
+            }
+
             $content = $this->item($item->code);
             $status = $content->STATUS ?? '';
 
@@ -63,6 +67,10 @@ class Rajabiller
         $items = RbItem::all();
 
         foreach ($items as $item) {
+            if ($item->code == 'PLNPRA' || $item->code == 'PLNPRAH') {
+                continue;
+            }
+
             $code = $item->code . 'H';
             $content = $this->item($code);
             $status = $content->STATUS ?? '';
