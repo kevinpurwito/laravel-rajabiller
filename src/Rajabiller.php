@@ -248,7 +248,7 @@ class Rajabiller
         return json_decode($response->getBody()->getContents());
     }
 
-    public function buy(string $refId, string $itemCode, string $customerId, int $nominal): object
+    public function buy(string $refId, string $itemCode, string $customerId, string|int $nominal): object
     {
         if (! in_array($itemCode, [RbConstant::PLN])) {
             return (object)['success' => false, 'message' => 'Invalid itemCode: ' . $itemCode];
@@ -264,7 +264,7 @@ class Rajabiller
             'kode_produk' => $itemCode,
             'idpel' => $customerId,
             'ref1' => $refId,
-            'nominal' => $nominal,
+            'nominal' => intval($nominal),
         ];
 
         $response = $this->client->request('POST', $this->url, ['json' => $params]);
